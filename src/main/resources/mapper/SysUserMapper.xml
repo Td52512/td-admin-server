@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.td.server.mapper.SysUserMapper">
+
+    <resultMap id="BaseResultMap" type="com.td.server.pojo.SysUser">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="nickName" column="nick_name" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="phonenumber" column="phonenumber" jdbcType="VARCHAR"/>
+            <result property="sex" column="sex" jdbcType="CHAR"/>
+            <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="CHAR"/>
+            <result property="delFlag" column="del_flag" jdbcType="CHAR"/>
+            <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,username,nick_name,
+        email,phonenumber,sex,
+        avatar,password,status,
+        del_flag,create_by,create_time,
+        update_by,update_time,remark
+    </sql>
+    <select id="selectUserPermissionByUserId" resultType="java.lang.String">
+        select  m.perms from sys_menu m
+                                 left join sys_role_menu rm on m.menu_id = rm.menu_id
+                                 left join sys_user_role ur on rm.role_id = ur.role_id
+                                 left join sys_role r on r.role_id = ur.role_id
+        where m.`status` = 0 and r.`status` = 0 and ur.user_id = #{userId}
+    </select>
+</mapper>
